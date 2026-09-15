@@ -1,0 +1,73 @@
+{
+  "version": 1,
+  "description": "4 DG, anillo; datos Tabla 1, DRE 2019",
+  "demand_kw": 800,
+  "fitness_offset": 3000,
+  "step_safety": 0.8,
+  "steps": 3000,
+  "period_s": 0.01,
+  "nodes": [
+    {
+      "id": 1,
+      "host": "pi-1.local",
+      "port": 5100,
+      "pmin": 100,
+      "pmax": 500,
+      "a": 64.67,
+      "b": 795.5,
+      "c": 1.15,
+      "x0": 150
+    },
+    {
+      "id": 2,
+      "host": "pi-2.local",
+      "port": 5100,
+      "pmin": 82,
+      "pmax": 362,
+      "a": 65.46,
+      "b": 1448.6,
+      "c": 0.82,
+      "x0": 300
+    },
+    {
+      "id": 3,
+      "host": "pi-3.local",
+      "port": 5100,
+      "pmin": 65,
+      "pmax": 315,
+      "a": 190.92,
+      "b": 838.1,
+      "c": 1.53,
+      "x0": 100
+    },
+    {
+      "id": 4,
+      "host": "pi-4.local",
+      "port": 5100,
+      "pmin": 50,
+      "pmax": 271,
+      "a": 39.19,
+      "b": 696.1,
+      "c": 2.46,
+      "x0": 250
+    }
+  ],
+  "edges": [
+    [
+      1,
+      2
+    ],
+    [
+      2,
+      3
+    ],
+    [
+      3,
+      4
+    ],
+    [
+      1,
+      4
+    ]
+  ]
+}

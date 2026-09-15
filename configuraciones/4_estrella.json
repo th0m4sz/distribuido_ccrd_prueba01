@@ -9,7 +9,7 @@
   "nodes": [
     {
       "id": 1,
-      "host": "pi-1.local",
+      "host": "pi-2.local",
       "port": 5100,
       "pmin": 100,
       "pmax": 500,
@@ -20,7 +20,7 @@
     },
     {
       "id": 2,
-      "host": "pi-2.local",
+      "host": "pi-4.local",
       "port": 5100,
       "pmin": 82,
       "pmax": 362,
@@ -31,7 +31,7 @@
     },
     {
       "id": 3,
-      "host": "pi-3.local",
+      "host": "pi-5.local",
       "port": 5100,
       "pmin": 65,
       "pmax": 315,
@@ -42,7 +42,7 @@
     },
     {
       "id": 4,
-      "host": "pi-4.local",
+      "host": "pi-6.local",
       "port": 5100,
       "pmin": 50,
       "pmax": 271,

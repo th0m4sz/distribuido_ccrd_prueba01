@@ -21,10 +21,12 @@ def make_config(n=4, topology="anillo", local=False):
     else:
         raise ValueError("Elegir anillo o estrella")
     initial = [150, 300, 100, 250] if n == 4 else [300, 250, 200, 200, 40, 160]
+    # ID del generador != numero fisico de la placa. Placas disponibles: 2, 4, 5, 6.
+    physical_boards = [2, 4, 5, 6] if n == 4 else ids
     nodes = []
     for i, row in enumerate(TABLE[:n], 1):
         lo, hi, a, b, c = row
-        nodes.append(dict(id=i, host="127.0.0.1" if local else f"pi-{i}.local",
+        nodes.append(dict(id=i, host="127.0.0.1" if local else f"pi-{physical_boards[i - 1]}.local",
                           port=5100 + i if local else 5100,
                           pmin=lo, pmax=hi, a=a, b=b, c=c, x0=initial[i - 1]))
     return dict(version=1, description=f"{n} DG, {topology}; datos Tabla 1, DRE 2019",

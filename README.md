@@ -75,13 +75,28 @@ Cada terminal muestra su potencia cada 500 iteraciones. Cada nodo guarda su CSV 
 JSON y termina después de 3 000 iteraciones. Para repetir, usar otro nombre de
 ensayo y otra carpeta de salida.
 
-Al terminar, reunir los CSV y JSON de todas las placas en una carpeta del PC:
+Al terminar, ejecutar **solo en la placa física 2**:
 
 ```bash
-python graficar.py --carpeta resultados/ensayo_recogido
+python3 recolectar.py --ensayo ensayo_003
 ```
 
-Ese comando verifica los registros, los combina y dibuja potencia y fitness.
+El script toma el nodo 1 de `pi-2`, recoge automáticamente los nodos 2, 3 y 4
+desde `pi-4.local`, `pi-5.local` y `pi-6.local`, y puede pedir la contraseña de
+`admin` una vez por placa. Después verifica, combina y crea las gráficas.
+
+Los resultados quedan claramente separados en:
+
+```text
+resultados/RECOLECCION_ensayo_003_4_PLACAS/
+resultados/RECOLECCION_ensayo_003_4_PLACAS.tar.gz
+```
+
+El `.tar.gz` es el único archivo que hay que llevar al PC mediante Drive, USB o
+el medio disponible. Si la carpeta ya existe, el script se detiene para evitar
+mezclar ensayos. Debe ejecutarse con el mismo nombre usado en `--run-id` y
+`--salida`; además, el ensayo debe haber terminado en las cuatro placas.
+
 El PC no participa en el cálculo entre placas. Si las redes del PC y del celular
 son distintas, hace falta un medio de transferencia entre ellas, por ejemplo
 un repositorio en Internet; los nombres `.local` se resuelven dentro de la red local.

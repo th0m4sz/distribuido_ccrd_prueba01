@@ -7,10 +7,34 @@ $$
 f_i=B-(b_i+2c_i x_i).
 $$
 
+La ecuación (3) de `RD_new00.pdf` es
+
 $$
 x_i[k+1]=x_i[k]+\alpha\hat x_i[k]
-\sum_{j\in N_i}a_{ij}\hat x_j[k](f_i[k]-f_j[k]).
+\left(
+f_i[k]\sum_{j\in\mathcal N_i}\hat x_j[k]
+-\sum_{j\in\mathcal N_i}\hat x_j[k]f_j[k]
+\right).
 $$
+
+Al introducir la primera suma dentro de una sola sumatoria,
+
+$$
+f_i[k]\sum_{j\in\mathcal N_i}\hat x_j[k]
+-\sum_{j\in\mathcal N_i}\hat x_j[k]f_j[k]
+=\sum_{j\in\mathcal N_i}\hat x_j[k](f_i[k]-f_j[k]),
+$$
+
+se obtiene la forma equivalente utilizada por el código:
+
+$$
+x_i[k+1]=x_i[k]+\alpha\hat x_i[k]
+\sum_{j\in\mathcal N_i}a_{ij}\hat x_j[k](f_i[k]-f_j[k]).
+$$
+
+El factor $a_{ij}$ permite asignar un peso a cada conexión. En las configuraciones
+actuales todas las conexiones tienen $a_{ij}=1$, por lo que la implementación
+coincide exactamente con la ecuación del borrador.
 
 Cada vecino recibe su propio estado, factor de capacidad y fitness. La arista es
 bidireccional. La sustitución de ambos factores por factores de capacidad permite

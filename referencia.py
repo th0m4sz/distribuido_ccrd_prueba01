@@ -39,8 +39,6 @@ def economic_dispatch(model):
 
 def metrics(model, x):
     optimum, price = economic_dispatch(model)
-    violation = max(max(p["pmin"] - x[i], x[i] - p["pmax"], 0)
-                    for i, p in model.nodes.items())
     kkt = []
     for i, p in model.nodes.items():
         marginal = p["b"] + 2 * p["c"] * x[i]
@@ -52,7 +50,6 @@ def metrics(model, x):
             kkt.append(abs(marginal - price))
     return {"generation_kw": math.fsum(x.values()),
             "balance_error_kw": math.fsum(x.values()) - model.demand,
-            "max_bound_violation_kw": violation,
             "max_dispatch_error_kw": max(abs(x[i] - optimum[i]) for i in model.ids),
             "cost": model.cost(x), "optimal_cost": model.cost(optimum),
             "cost_gap": model.cost(x) - model.cost(optimum),

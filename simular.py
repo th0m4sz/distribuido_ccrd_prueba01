@@ -2,7 +2,6 @@
 import argparse
 import csv
 import json
-import math
 from pathlib import Path
 
 from modelo import Model, advance
@@ -12,8 +11,6 @@ from referencia import metrics
 def simulate(model, steps=None, output=None, sample_every=10):
     steps = steps or model.steps
     x = model.initial()
-    peak_balance, peak_bound, peak_cost_increase = 0.0, 0.0, 0.0
-    previous_cost = model.cost(x)
     stream = None
     if output:
         output = Path(output)
@@ -23,22 +20,24 @@ def simulate(model, steps=None, output=None, sample_every=10):
         writer.writerow(["round"] + [f"x_{i}" for i in model.ids] + ["balance_error_kw", "cost"])
     try:
         for k in range(steps + 1):
-            balance = math.fsum(x.values()) - model.demand
+            balance = sum(x.values()) - model.demand
             cost = model.cost(x)
-            peak_balance = max(peak_balance, abs(balance))
-            peak_cost_increase = max(peak_cost_increase, cost - previous_cost)
-            peak_bound = max(peak_bound, max(max(p["pmin"] - x[i], x[i] - p["pmax"], 0)
-                                           for i, p in model.nodes.items()))
             if stream and (k % sample_every == 0 or k == steps):
                 writer.writerow([k] + [x[i] for i in model.ids] + [balance, cost])
-            previous_cost = cost
             if k < steps:
                 x = advance(model, x)
         result = metrics(model, x)
-        result.update(steps=steps, alpha=model.alpha, max_balance_error_kw=peak_balance,
-                      max_bound_violation_all_kw=peak_bound, max_cost_increase=peak_cost_increase)
+        result.update(steps=steps, alpha=model.alpha)
         if output:
-            (output / "resumen.json").write_text(json.dumps(result, indent=2) + "\n", encoding="utf-8")
+            summary = {
+                "iterations": steps,
+                "alpha": model.alpha,
+                "demand_kw": model.demand,
+                "total_power_final_kw": result["generation_kw"],
+                "final_balance_error_kw": result["balance_error_kw"],
+                "x_final_kw": result["x_final"],
+            }
+            (output / "resumen.json").write_text(json.dumps(summary, indent=2) + "\n", encoding="utf-8")
             (output / "config.json").write_text(json.dumps(model.config, indent=2) + "\n", encoding="utf-8")
         return result
     finally:

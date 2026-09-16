@@ -40,6 +40,9 @@ y `6_estrella`. En cada carpeta, abrir `trayectorias.png`.
 El CSV conserva los datos y el JSON permite verificar el ensayo; no es necesario
 leerlos para comenzar. No se generan gráficas adicionales.
 
+El archivo `resumen.json` muestra solamente las iteraciones, `alpha`, la demanda,
+la potencia total final, el error final de balance y las potencias finales.
+
 ## Ejecutar en las placas
 
 Copiar a cada placa **nodo.py**, **modelo.py**, **red.py** y **configuraciones/**.
@@ -110,6 +113,26 @@ No se ha creado un repositorio ni configurado acceso remoto automáticamente.
   generadores libres. No se debe exigir que todas las curvas de fitness coincidan.
 
 Más detalle matemático: [Nota del modelo](documentacion/BASE_MATEMATICA.md).
+
+## Para qué sirve cada archivo Python
+
+| Archivo | Función |
+|---|---|
+| `nodo.py` | Programa principal que se ejecuta una vez en cada Raspberry Pi. |
+| `modelo.py` | Contiene las ecuaciones, calcula `alpha` y actualiza la potencia. |
+| `red.py` | Envía y recibe por TCP el estado de los vecinos de cada ronda. |
+| `recolectar.py` | Reúne en la Pi 2 los resultados de las cuatro placas. |
+| `graficar.py` | Crea la imagen con potencia, fitness y potencia total. |
+| `analizar.py` | Une los CSV y comprueba que pertenezcan al mismo ensayo. |
+| `simular.py` | Ejecuta las mismas ecuaciones en un computador, sin red. |
+| `crear_config.py` | Genera los JSON de ejemplo para 4 o 6 nodos. |
+| `prueba_local.py` | Abre varios procesos en un PC para probar la comunicación TCP. |
+| `referencia.py` | Calcula offline el despacho económico KKT; las placas no lo usan. |
+| `verificar.py` | Ejecuta automáticamente los cuatro ejemplos de simulación. |
+
+La carpeta `tests/` es solamente para desarrollo. `test_modelo.py` comprueba las
+ecuaciones, conservación y límites. `test_red.py` comprueba mensajes, rondas,
+vecinos y fallos de red. No se copia a las placas ni participa en un ensayo.
 
 ## Comprobaciones internas (opcionales)
 

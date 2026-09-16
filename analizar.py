@@ -70,7 +70,18 @@ def analyze(folder, dispatch_tolerance=.01):
     result["passed"] = (peak_balance < 1e-6 and result["max_dispatch_error_kw"] < dispatch_tolerance
                         and recurrence_error < 1e-9 and peak_increase < 1e-6)
     result["dispatch_tolerance_kw"] = dispatch_tolerance
-    (folder / "resumen.json").write_text(json.dumps(result, indent=2) + "\n", encoding="utf-8")
+    # Resumen sencillo para presentar; las comprobaciones detalladas quedan internas.
+    summary = {
+        "run_id": next(iter(runs)),
+        "status": "completed",
+        "iterations": model.steps,
+        "alpha": model.alpha,
+        "demand_kw": model.demand,
+        "total_power_final_kw": result["generation_kw"],
+        "final_balance_error_kw": result["balance_error_kw"],
+        "x_final_kw": result["x_final"],
+    }
+    (folder / "resumen.json").write_text(json.dumps(summary, indent=2) + "\n", encoding="utf-8")
     return result
 
 

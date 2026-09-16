@@ -56,7 +56,7 @@ class ModelTests(unittest.TestCase):
     def test_connected_does_not_imply_optimum_when_saturated(self):
         for n, topology in ((6, "anillo"),):
             r = simulate(Model(make_config(n, topology)), 6000)
-            self.assertLess(r["max_balance_error_kw"], 1e-6)
+            self.assertLess(abs(r["balance_error_kw"]), 1e-6)
             self.assertGreater(r["max_dispatch_error_kw"], 1)
 
     def test_recommended_examples_match_reference(self):

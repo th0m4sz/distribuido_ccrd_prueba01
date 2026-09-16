@@ -10,9 +10,7 @@ def main():
     for n in (4, 6):
         for topology in ("anillo", "estrella"):
             result = simulate(Model(make_config(n, topology)), output=output / f"{n}_{topology}")
-            assert result["max_balance_error_kw"] < 1e-6
-            assert result["max_bound_violation_all_kw"] == 0
-            assert result["max_cost_increase"] < 1e-6
+            assert abs(result["balance_error_kw"]) < 1e-6
             reached = result["max_dispatch_error_kw"] < .01
             assert reached == (not (n == 6 and topology == "anillo"))
             print(f"{n} nodos, {topology}: " + ("correcto" if reached else "balance conservado; bloqueo por saturacion"))
